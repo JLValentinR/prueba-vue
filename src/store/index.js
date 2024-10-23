@@ -6,7 +6,6 @@ export default createStore({
   },
   getters: {
     getInfo: (state) => (id) => {
-      console.log(id)
       return state.info.filter(data => data.idTarifa === id)
     }
   },

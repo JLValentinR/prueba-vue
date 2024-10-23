@@ -21,7 +21,6 @@ const dataSearch = ref({})
 const resultSearch = () => {
   const result = store.getters.getInfo(search.value)
   dataSearch.value = result
-  console.log(dataSearch.value)
 }
 
 const search = ref('')
