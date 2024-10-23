@@ -1,5 +1,3 @@
-# Radio Desk
-
 ## Build Setup
 
 ``` bash
