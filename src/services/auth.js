@@ -13,8 +13,8 @@ export const login = () => {
  * @param {Object} payload
  * @return AxiosPromise
  */
-export const setLogin = (payload) => {
-  return axios.post('url', payload)
+export const getInfo = (payload) => {
+  return axios.post('https://ebind-dev.egl-cloud.com/dgs-api-bridge/tarifas/consulta', payload)
 }
 
 /**

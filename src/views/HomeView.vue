@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import store from '@/store'
+import { getInfo } from '@/services/auth'
 const tab = ref(false)
 const info = ref({
   idTarifa: '',
@@ -17,10 +18,31 @@ const info = ref({
 })
 
 const dataSearch = ref({})
+const resultEmpty = ref(false)
 
-const resultSearch = () => {
+const resultSearchLocal = () => {
   const result = store.getters.getInfo(search.value)
   dataSearch.value = result
+}
+
+const resultSearchAPI = () => {
+  const objs = {
+    idTarifa: search.value
+  }
+  getInfo(objs).then((response) => {
+    try {
+      if (response.data.response.tarifas !== undefined) {
+        dataSearch.value = response.data.response.tarifas
+        resultEmpty.value = true
+      } else {
+        resultEmpty.value = false
+        dataSearch.value = []
+      }
+    } catch (e) {
+      resultEmpty.value = false
+      dataSearch.value = []
+    }
+  })
 }
 
 const search = ref('')
@@ -109,9 +131,10 @@ const validateInfo = computed(() => {
           <label for="" class="mr-3">Ingresa un idTarifa</label>
           <input type="text" v-model="search">
         </div>
-        <button class="normal ml-3" @click="resultSearch()">Buscar</button>
+        <button class="normal normal2 ml-3" @click="resultSearchLocal()">Buscar local</button>
+        <button class="normal normal2 ml-3" @click="resultSearchAPI()">Buscar API</button>
       </div>
-      <div v-if="dataSearch.length > 0" class="mt-3">
+      <div v-if="dataSearch.length > 0 && resultEmpty" class="mt-3">
         <div>
           <label for="" class="mr-3">Ingresa un idTarifa</label>
           <input type="text" :value="dataSearch[0].idTarifa">
@@ -156,6 +179,9 @@ const validateInfo = computed(() => {
           <label for="" class="mr-3">Selecciona un aplicativo</label>
           <input type="text" :value="dataSearch[0].aplicativos">
         </div>
+      </div>
+      <div v-if="dataSearch.length === 0 && !resultEmpty">
+        Sin resultado
       </div>
     </div>
   </div>
