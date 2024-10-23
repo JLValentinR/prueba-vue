@@ -26,6 +26,8 @@ const resultSearch = () => {
 
 const search = ref('')
 
+const message = ref('')
+
 const selectTab = (value) => {
   tab.value = value
 }
@@ -34,6 +36,7 @@ const saveInfo = (e) => {
   e.preventDefault()
   if (validateInfo.value) {
     store.commit('addInfo', info.value)
+    message.value = 'se guardo exitosamente'
   }
 }
 
@@ -97,6 +100,7 @@ const validateInfo = computed(() => {
           <label for="" class="mr-3">Selecciona un aplicativo</label>
           <input type="text" v-model="info.aplicativos">
         </div>
+        <div class="mt-4 message">{{message}}</div>
         <button class="mt-2">Guardar</button>
       </form>
     </div>
